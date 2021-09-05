@@ -1,0 +1,7 @@
+<div class="top-menus" *ngIf="isLoggedIn$ | async"> 
+    <a routerLinkActive="Active" routerLink="Accounts">Accounts</a>
+    <!-- <a routerLinkActive="Active" [routerLink]="[{ outlets: {sub: 'Notes'},state:['Notes','3'] }]">Notes</a> -->
+    <a routerLinkActive="Active" routerLink="LogOut">LogOut</a>
+</div>
+ 
+<router-outlet></router-outlet> 

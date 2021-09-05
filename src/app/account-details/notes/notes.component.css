@@ -1,0 +1,92 @@
+
+.btn-action>button{
+    margin-right: 20px;
+    width: 120px;
+}
+.custom-control {
+    display: block;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.B{
+    font-weight: bold;
+} 
+.big-font{
+    font-size: large;
+    line-height: 16px;
+    font-size: 14px;
+    margin-top: 0;
+    min-width: 0;
+}
+.bg-color{
+    background-color: #f5f5f5;
+    padding: 5px 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.pin-color{
+  color: #0d6efd;
+}
+.comment-c1 {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-right: 2px;
+    padding-top: 10px;
+}
+.comment-c2{
+    align-items: flex-end;
+    display: flex;
+}
+.comment-c3{
+    background-color: #ebedf0;
+    border-radius: 18px;
+    display: inline-block;
+    line-height: 16px;
+    margin-top: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 6px 12px 7px 12px;
+}
+.comment-user{
+    font-size: 12px;
+    line-height: 14px;
+    padding: 0 0 4px 0;
+}
+.flx-selectable-list{
+    padding-left: 1rem;
+}
+.flx-selectable-list-item{
+    display: flex;
+    align-items: left;  
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color:#a2c7ff;
+}
+.flx-selectable-list-item:hover{
+    background-color:#86b4fa;
+}
+.invalid-fields {
+    color: #dc3545;
+}
+.link{
+    width: 90px;
+    float: right;
+    z-index: 100;
+    margin-top: -25px;
+    position: inherit;
+    background-color: #f5f5f5;
+}

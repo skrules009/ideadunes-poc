@@ -1,0 +1,163 @@
+<div>
+    <button type="button" (click)="openAddNotes(accountContent)" class="btn btn-primary form-control">Add Note</button>
+
+</div>
+<div class="sm input-group p-tb10">
+
+    <input id="search-focus" type="search" [(ngModel)]="searchValue" placeholder="Search" class="form-control" />
+</div>
+<div>
+    <div class="sm main " *ngFor="let item of noteList | searchAccounts : searchValue">
+        <div class="row-level bg-color">
+            <div><span class="B big-font">{{item.createdDt| date:'MMM dd,yyyy MM:HH'}} - </span>
+                <span class="big-font">{{item.createdBy}} left a </span>
+                <span class="B big-font">{{item.typeOfContact}}</span> note
+                <span style="float: right;" *ngIf="item?.pin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-pin pin-color" viewBox="0 0 15 15">
+                        <path
+                            d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354zm1.58 1.408-.002-.001.002.001zm-.002-.001.002.001A.5.5 0 0 1 6 2v5a.5.5 0 0 1-.276.447h-.002l-.012.007-.054.03a4.922 4.922 0 0 0-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a4.915 4.915 0 0 0-.881-.61l-.012-.006h-.002A.5.5 0 0 1 10 7V2a.5.5 0 0 1 .295-.458 1.775 1.775 0 0 0 .351-.271c.08-.08.155-.17.214-.271H5.14c.06.1.133.191.214.271a1.78 1.78 0 0 0 .37.282z" />
+                    </svg>
+                </span>
+            </div>
+            <div class="sm text-justify" [innerHtml]="item.noteId===selectedNoteId ? item.notes : item.notes | slice:0:170">  
+                                         
+            </div>
+            <div class="link">
+                &nbsp;&nbsp;<a href="javascript:;" (click)="showMore(item.noteId)">{{item.noteId===selectedNoteId ? "Read Less":"Read More"}}</a>
+            </div> 
+        </div>
+        <div *ngIf="item.noteId===selectedNoteId">
+            <div class="col btn-action">
+                <button type="button" (click)="editNote(item,accountContent)" class="btn btn-primary">Edit</button>
+                <button type="button" (click)="openAddComment(commentContent,item)"
+                    class="btn btn-primary">Comment</button>
+                <button type="button" (click)="pinnedItem(item)"
+                    class="btn btn-primary">{{item?.pin?'Unpin':'Pin'}}</button>
+            </div>
+
+            <div class="comment-c1" *ngFor="let comm of item?.commentList">
+                <div class="comment-c2">
+                    <div class="comment-c3">
+                        <div class="comment-user B">{{comm.createdBy}} ({{comm.createdDt| date:'MMM dd,yyyy MM:HH'}})
+                        </div>
+                        <div>
+                            <span class="comm-list" [innerHtml]="comm.comment"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #accountContent let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Note</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="note">
+            <div class="input-group">
+                <select class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.typeOfContact.errors }" formControlName="typeOfContact">
+                    <option value="Type Of Notes">Type Of Notes</option>
+                    <option *ngFor="let type of noteTypes" value="{{type}}">{{type}}</option>
+                </select>
+                <button type="button" (click)="pinToggle()"
+                    class="btn btn-{{note?.controls?.pin?.value ? 'success' : 'light'}} btn-outline--{{note?.controls?.pin?.value ? 'success' : 'secondary'}} form-control">
+                    {{note?.controls?.pin?.value ? 'Pinned' : 'Pin'}}</button>
+                    <br/>
+                    <div *ngIf="submitted && f.typeOfContact.hasError('required') || f.typeOfContact.hasError('validateType')" class="invalid-fields">Please choose an option</div>
+            </div>
+            <div class="input-group p-tb20">
+                <!-- <textarea cols="5" rows="8" #textareaRef formControlName="notes" class="form-control" style="width: 100%;"
+                    placeholder="Add Note" ></textarea> -->
+                <div class="relative-block-container" >
+                    <textarea cols="62" formControlName="notes" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"  class="form-control" rows="6" placeholder="Add Note"
+                        #textareaRef></textarea>
+                    <flx-mentions [textInputElement]="textareaRef" [menuTemplate]="menuTemplate"
+                        [triggerCharacter]="'@'" [getChoiceLabel]="getChoiceLabel" (search)="loadChoices($event)"
+                        (selectedChoicesChange)="onSelectedChoicesChange($event)" (menuHide)="onMenuHide()">
+                    </flx-mentions>
+                </div>
+                <div *ngIf="submitted && f.notes.hasError('required')" class="invalid-fields">Please enter the note and continue</div>
+               
+            </div>
+            <div class="input-group ">
+                <label class="custom-control">Time In</label>
+                <input type="time" [ngClass]="{ 'is-invalid': submitted && f.timeIn.errors }" id="timeIn" formControlName="timeIn" class="form-control">
+                <label class="custom-control">Time Out</label>
+                <input type="time" [ngClass]="{ 'is-invalid': submitted && f.timeOut.errors }" id="timeOut" formControlName="timeOut" class="form-control">
+                <br/>
+                <span *ngIf="submitted && (f.timeIn.hasError('required') || f.timeOut.hasError('required'))"
+                class="invalid-fields">Please choose the TimeIn/TimeOut</span>
+                
+                
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="col btn-action">
+            <div class="sm col-6 float-left">
+                <button type="button" (click)="saveNote(modal);"
+                    class="btn btn-primary form-control">Save</button>
+            </div>
+            <div class="sm col-6 float-right">
+                <button type="button" (click)="modal.dismiss('Cross click')"
+                    class="btn btn-primary form-control">Cancel</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #commentContent let-commentModal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Comment</h4>
+        <button type="button" class="close" aria-label="Close" (click)="commentModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="comment">
+            <div class="input-group p-tb20">
+                <!-- <textarea cols="5" rows="8" formControlName="comment" class="form-control" style="width: 100%;"
+                    placeholder="Add Comment" [mentionConfig]="mentionConfig"></textarea> -->
+                <div class="relative-block-container" >
+                    <textarea cols="62" formControlName="comment" [ngClass]="{ 'is-invalid': commentSubmitted && c.comment.errors }" class="form-control" rows="6" placeholder="Add Note"
+                        #textareaRef></textarea>
+                    <flx-mentions [textInputElement]="textareaRef" [menuTemplate]="menuTemplate"
+                        [triggerCharacter]="'@'" [getChoiceLabel]="getChoiceLabel" (search)="loadChoices($event)"
+                        (selectedChoicesChange)="onSelectedChoicesChange($event)" (menuHide)="onMenuHide()">
+                    </flx-mentions>
+                </div>
+                <div *ngIf="commentSubmitted && c.comment.hasError('required')" class="invalid-fields">Please enter the comment</div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="col btn-action">
+            <div class="sm col-6 float-left">
+                <button type="button" (click)="saveComment(commentModal);"
+                    class="btn btn-primary form-control">Save</button>
+            </div>
+            <div class="sm col-6 float-right">
+                <button type="button" (click)="commentModal.dismiss('Cross click')"
+                    class="btn btn-primary form-control">Cancel</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #menuTemplate let-selectChoice="selectChoice">
+    <ul flxLoader class="flx-selectable-list" [class.loader-only]="!choices.length && loading">
+        <li *ngFor="let user of choices" class="flx-selectable-list-item" (click)="selectChoice(user)">
+            <span title="{{user.name}}">{{user.name}}</span>
+        </li>
+    </ul>
+</ng-template>

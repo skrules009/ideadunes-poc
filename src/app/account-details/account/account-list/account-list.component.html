@@ -1,0 +1,25 @@
+
+<div class="container">
+    <div class="row">
+        <h2>Accounts</h2>
+        <div class="sm input-group">
+              <input id="search-focus" type="search" [(ngModel)]="searchValue" placeholder="Search" class="form-control" />          
+          </div>      
+        <div class="sm main" *ngFor="let item of accounts | searchAccounts : searchValue">
+            <div class="row-level">
+                <div class="col1 sm">{{item.name}}<br />
+                    <span>{{item.type}}</span>
+                </div>
+                <div class="col2 sm">{{item.crr}}<br />
+                    <span>{{item.zone}}</span>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-between p-tb20" style="background-color: #f8f9fa;">
+              <button type="button" (click)="viewAccounts(item)" class="btn btn-primary">View Account</button>
+              <button type="button" class="btn btn-primary">Navigate To</button>
+              <button type="button" (click)="addNotes(item)" class="btn btn-primary">Add Note</button>
+              <button type="button" class="btn btn-primary">Add To Today</button>
+            </div>
+        </div>
+    </div>
+</div>

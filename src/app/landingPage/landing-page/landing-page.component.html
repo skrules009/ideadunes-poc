@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <h4 class="sm center p-b30">{{accountName}}</h4>
+        <div class="links sm col d-flex justify-content-between">
+            <button *ngFor="let tab of tabs;index as i" (click)="navigate(tab.name,i)" class="btn btn-link"
+                [ngClass]="{'highlight-menu':tab.isSelected}">
+                <span>{{ tab.label }}</span>
+            </button>
+        </div>
+        <hr />
+        <div>
+            <router-outlet name="sub"></router-outlet>
+        </div>
+    </div>
+</div>
+
+<!-- [routerLink]="[{ outlets: { sub: [tab.name] } }]" -->
